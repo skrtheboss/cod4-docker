@@ -31,7 +31,7 @@ LABEL org.label-schema.schema-version="1.0.0" \
     org.label-schema.docker.cmd="See readme of Github page" \
     org.label-schema.version=$BUILD_VERSION \
     image-size="180MB" \
-    ram-usage="120MB to 250MB" \
+    ram-usage="80MB to 250MB" \
     cpu-usage="Low"
 
 EXPOSE 28960/udp
