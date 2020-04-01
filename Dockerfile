@@ -30,7 +30,7 @@ LABEL org.label-schema.schema-version="1.0.0" \
     org.label-schema.vcs-usage="https://github.com/skrtheboss/cod4-docker/blob/master/README.md#setup" \
     org.label-schema.docker.cmd="See readme of Github page" \
     org.label-schema.version=$BUILD_VERSION \
-    image-size="180MB" \
+    image-size="168MB" \
     ram-usage="80MB to 250MB" \
     cpu-usage="Low"
 
