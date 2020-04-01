@@ -1,27 +1,47 @@
-version: '3'
+version: '3.7'
+
 services:
-  cod4:
-    image: qmcgaw/cod4
-    container_name: cod4
-    volumes:
-      - /yourpath/main:/home/user/cod4/main
-      - /yourpath/zone:/home/user/cod4/zone:ro
-      - /yourpath/mods:/home/user/cod4/mods
-      - /yourpath/usermaps:/home/user/cod4/usermaps:ro
-      - /yourpath/logs:/home/user/.callofduty4
-    network_mode: bridge
-    ports:
-      - 28960:28960/udp
-    command: +set dedicated 2+set sv_cheats 1+set sv_maxclients 64+set ui_maxclients 64+exec server.cfg+map_rotate
-    restart: always
-  # =>>> http server to server mods and usermaps
-  #http:
-  #  image: httpd:alpine
-  #  container_name: cod4-http
-  #  volumes:
-  #    - ./mods:/usr/local/apache2/htdocs/mods:ro
-  #    - ./usermaps:/usr/local/apache2/htdocs/usermaps:ro
-  #  ports:
-  #    - 8000:80
-  #  network_mode: bridge
-  #  restart: always
+    cod4:
+        build: .
+        # image: skrtheboss/cod4
+        volumes:
+            - /home/cod4-base/main:/home/user/cod4/main
+            - /home/cod4-base/zone:/home/user/cod4/zone:ro
+            - /home/cod4-base/mods:/home/user/cod4/mods
+            - /home/cod4-base/usermaps:/home/user/cod4/usermaps:ro
+            - /home/cod4-server-1:/home/user/.callofduty # Optional `.callofduty` is the default sv_homepath
+            - /home/cod4-server-1/screenshots:/home/user/cod4/screenshots # Optional save screenshots on an external path
+        ports:
+            - 28963:28960/udp
+        command: +set dedicated 2+exec server.cfg+map_rotate
+        # Example of how to run with mods
+        # command: +set dedicated 2+set fs_game mods/mod_name+exec server.cfg+map_rotate
+        network_mode: bridge
+
+    # Example of a fast-download configuration
+    # Usermaps will be available under: http://fastdownload.your-domain.com/cod4/{mods, usermaps}/...
+#    nginx-proxy:
+#        image: jwilder/nginx-proxy
+#        container_name: nginx-proxy
+#        ports:
+#            - "80:80"
+#        volumes:
+#            - /var/run/docker.sock:/tmp/docker.sock:ro
+#        restart: always
+#
+#    fastdownload:
+#        image: flashspys/nginx-static
+#        container_name: fastdownload
+#        expose:
+#            - 80
+#        volumes:
+#            - /home/denis/cod4-base/mods:/static/cod4/mods:ro
+#            - /home/denis/cod4-base/usermaps:/static/cod4/usermaps:ro
+#        restart: always
+#        environment:
+#            - VIRTUAL_HOST=fastdownload.your-domain.com
+#
+#networks:
+#    default:
+#        external:
+#            name: nginx-proxy
